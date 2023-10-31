@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/avinal/interpreter-go/pkg/repl"
 	"os"
 	"os/user"
-
-	"github.com/avinal/interpreter-go/pkg/repl"
 )
 
 func main() {

@@ -7,6 +7,7 @@ import (
 	"github.com/avinal/interpreter-go/pkg/object"
 	"github.com/avinal/interpreter-go/pkg/parser"
 	"io"
+	"strings"
 
 	"github.com/avinal/interpreter-go/pkg/lexer"
 )
@@ -47,4 +48,21 @@ func printParseErrors(out io.Writer, errors []string) {
 	for _, msg := range errors {
 		io.WriteString(out, "\t"+msg+"\n")
 	}
+}
+
+func StartWasm(input string) string {
+	env := object.NewEnvironment()
+	l := lexer.New(input)
+	p := parser.New(l)
+
+	program := p.ParseProgram()
+	if len(p.Errors()) != 0 {
+		return strings.Join(p.Errors(), "\n")
+	}
+
+	evaluated := evaluator.Eval(program, env)
+	if evaluated != nil {
+		return evaluated.Inspect()
+	}
+	return ""
 }
